@@ -7,68 +7,19 @@ def home(request):
     """
     Controller for the app home page.
     """
-    save_button = Button(
-        display_text='',
-        name='save-button',
-        icon='save',
-        style='success',
-        attributes={
-            'data-bs-toggle':'tooltip',
-            'data-bs-placement':'top',
-            'title':'Save'
-        }
-    )
-
-    edit_button = Button(
-        display_text='',
-        name='edit-button',
-        icon='pen',
-        style='warning',
-        attributes={
-            'data-bs-toggle':'tooltip',
-            'data-bs-placement':'top',
-            'title':'Edit'
-        }
-    )
-
-    remove_button = Button(
-        display_text='',
-        name='remove-button',
-        icon='trash',
-        style='danger',
-        attributes={
-            'data-bs-toggle':'tooltip',
-            'data-bs-placement':'top',
-            'title':'Remove'
-        }
-    )
-
-    previous_button = Button(
-        display_text='Previous',
-        name='previous-button',
-        attributes={
-            'data-bs-toggle':'tooltip',
-            'data-bs-placement':'top',
-            'title':'Previous'
-        }
-    )
-
-    next_button = Button(
-        display_text='Next',
-        name='next-button',
-        attributes={
-            'data-bs-toggle':'tooltip',
-            'data-bs-placement':'top',
-            'title':'Next'
-        }
-    )
+    x0 = 10
+    y0 = 1
+    alpha = 1.1
+    beta = 0.4
+    delta = 0.1
+    gamma = 0.4
 
     context = {
-        'save_button': save_button,
-        'edit_button': edit_button,
-        'remove_button': remove_button,
-        'previous_button': previous_button,
-        'next_button': next_button
+        "initial_x0": x0,
+        "initial_y0": y0,
+        "initial_alpha": alpha,
+        "initial_beta": beta,
+        "initial_delta": delta,
+        "initial_gamma": gamma,
     }
-
     return render(request, 'pred_prey/home.html', context)
