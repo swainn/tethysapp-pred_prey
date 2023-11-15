@@ -47,5 +47,18 @@ def generate_population_dynamics_plot(t, z):
     return fig
 
 
-#  xaxis_title='Prey (per sq. kilometer)',
-#         yaxis_title='Predators (per sq. kilometer)',
+def generate_phase_space_plot(t, z):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=z[:, 0],
+        y=z[:, 1],
+    ))
+    fig.update_layout(
+        autosize=True,
+        height=PLOT_HEIGHT,
+        xaxis_title='Prey (per sq. kilometer)',
+        yaxis_title='Predators (per sq. kilometer)',
+        legend=LEGEND_POSITION,
+        margin=PLOT_MARGINS,
+    )
+    return fig

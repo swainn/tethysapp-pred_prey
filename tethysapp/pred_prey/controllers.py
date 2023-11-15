@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from tethys_sdk.routing import controller
 from tethys_sdk.gizmos import PlotlyView
-from .pred_prey import run_pred_prey_simulation, generate_population_dynamics_plot
+from .pred_prey import run_pred_prey_simulation, generate_population_dynamics_plot, generate_phase_space_plot
 
 
 @controller
@@ -58,10 +58,13 @@ def home(request):
             gamma_error = "gamma must be positive."
 
     pop_dynamics_plot = None
+    phase_space_plot = None
     if not has_errors:
         t, z = run_pred_prey_simulation(x0, y0, alpha, beta, delta, gamma)
         pop_dynamics_fig = generate_population_dynamics_plot(t, z)
         pop_dynamics_plot = PlotlyView(pop_dynamics_fig)
+        phase_space_fig = generate_phase_space_plot(t, z)
+        phase_space_plot = PlotlyView(phase_space_fig)
 
     context = {
         "initial_x0": x0,
@@ -77,5 +80,6 @@ def home(request):
         "delta_error": delta_error,
         "gamma_error": gamma_error,
         "pop_dynamics_plot": pop_dynamics_plot,
+        "phase_space_plot": phase_space_plot,
     }
     return render(request, 'pred_prey/home.html', context)

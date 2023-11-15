@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block app_content %}
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col">
       <div id="parameters-container" class="pb-3">
@@ -86,7 +86,11 @@
                     {% gizmo pop_dynamics_plot %}
                   </div>
                 {% else %}
-
+                  <div class="plot-wrapper">
+                    <div class="alert alert-danger" role="alert">
+                      Please correct errors to view plots.
+                    </div>
+                  </div>
                 {% endif %}
               </div>
             </div>
@@ -101,7 +105,17 @@
                 Phase-Space Plot
               </div>
               <div class="card-body">
-                <p>Hello, world!</p>
+                {% if phase_space_plot %}
+                  <div class="plot-wrapper">
+                    {% gizmo phase_space_plot %}
+                  </div>
+                {% else %}
+                  <div class="plot-wrapper">
+                    <div class="alert alert-danger" role="alert">
+                      Please correct errors to view plots.
+                    </div>
+                  </div>
+                {% endif %}
               </div>
             </div>
           </div>
