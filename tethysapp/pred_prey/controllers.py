@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from tethys_sdk.routing import controller
-from tethys_sdk.gizmos import Button
-from .pred_prey import run_pred_prey_simulation
+from tethys_sdk.gizmos import PlotlyView
+from .pred_prey import run_pred_prey_simulation, generate_population_dynamics_plot
 
 
 @controller
@@ -57,9 +57,11 @@ def home(request):
             has_errors = True
             gamma_error = "gamma must be positive."
 
+    pop_dynamics_plot = None
     if not has_errors:
         t, z = run_pred_prey_simulation(x0, y0, alpha, beta, delta, gamma)
-        print(t, z)
+        pop_dynamics_fig = generate_population_dynamics_plot(t, z)
+        pop_dynamics_plot = PlotlyView(pop_dynamics_fig)
 
     context = {
         "initial_x0": x0,
@@ -74,5 +76,6 @@ def home(request):
         "beta_error": beta_error,
         "delta_error": delta_error,
         "gamma_error": gamma_error,
+        "pop_dynamics_plot": pop_dynamics_plot,
     }
     return render(request, 'pred_prey/home.html', context)

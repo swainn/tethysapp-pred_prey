@@ -81,7 +81,13 @@
                 Population Dynamics Plot
               </div>
               <div class="card-body">
-                <p>Hello, world!</p>
+                {% if pop_dynamics_plot %}
+                  <div class="plot-wrapper">
+                    {% gizmo pop_dynamics_plot %}
+                  </div>
+                {% else %}
+
+                {% endif %}
               </div>
             </div>
           </div>

@@ -14,6 +14,7 @@ requirements:
     packages:
       - numpy
       - scipy
+      - plotly
 
   pip:
 
