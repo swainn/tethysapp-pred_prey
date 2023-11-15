@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from tethys_sdk.routing import controller
 from tethys_sdk.gizmos import Button
+from .pred_prey import run_pred_prey_simulation
+
 
 @controller
 def home(request):
@@ -54,6 +56,10 @@ def home(request):
         if gamma <= 0:
             has_errors = True
             gamma_error = "gamma must be positive."
+
+    if not has_errors:
+        t, z = run_pred_prey_simulation(x0, y0, alpha, beta, delta, gamma)
+        print(t, z)
 
     context = {
         "initial_x0": x0,
