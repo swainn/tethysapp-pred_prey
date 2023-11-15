@@ -1,4 +1,6 @@
+import json
 from django.shortcuts import render
+from django.http import JsonResponse
 from tethys_sdk.routing import controller
 from tethys_sdk.gizmos import PlotlyView, SelectInput
 from .pred_prey import run_pred_prey_simulation, generate_population_dynamics_plot, generate_phase_space_plot
@@ -127,3 +129,67 @@ def home(request):
         "scenario_data": SCENARIOS,
     }
     return render(request, 'pred_prey/home.html', context)
+
+
+@controller
+def dynamic(request):
+    """
+    Controller for the app home page.
+    """
+    x0 = 10
+    y0 = 1
+    alpha = 1.1
+    beta = 0.4
+    delta = 0.1
+    gamma = 0.4
+    scenario = 'bears-and-fish'    
+
+    t, z = run_pred_prey_simulation(x0, y0, alpha, beta, delta, gamma)
+    pop_dynamics_fig = generate_population_dynamics_plot(t, z)
+    pop_dynamics_plot = PlotlyView(pop_dynamics_fig)
+    phase_space_fig = generate_phase_space_plot(t, z)
+    phase_space_plot = PlotlyView(phase_space_fig)
+
+    scenario_select = SelectInput(
+        display_text='Scenario',
+        name='scenario',
+        multiple=False,
+        options=[(v['name'], k) for k, v in SCENARIOS.items()],
+        initial=scenario,
+    )
+
+    context = {
+        "initial_x0": x0,
+        "initial_y0": y0,
+        "initial_alpha": alpha,
+        "initial_beta": beta,
+        "initial_delta": delta,
+        "initial_gamma": gamma,
+        "pop_dynamics_plot": pop_dynamics_plot,
+        "phase_space_plot": phase_space_plot,
+        "scenario_select": scenario_select,
+        "scenario_data": SCENARIOS,
+    }
+    return render(request, 'pred_prey/dynamic.html', context)
+
+
+@controller
+def run_simulation(request):
+    params = json.loads(request.body)
+    x0 = int(params.get('x0'))
+    y0 = int(params.get('y0'))
+    alpha = float(params.get('alpha'))
+    beta = float(params.get('beta'))
+    delta = float(params.get('delta'))
+    gamma = float(params.get('gamma'))
+
+    t, z = run_pred_prey_simulation(x0, y0, alpha, beta, delta, gamma)
+    pop_dynamics_fig = generate_population_dynamics_plot(t, z)
+    phase_space_fig = generate_phase_space_plot(t, z)
+    
+    response = JsonResponse({
+        "success": True,
+        "pop_dynamics_fig": pop_dynamics_fig.to_json(),
+        "phase_space_fig": phase_space_fig.to_json(),
+    })
+    return response

@@ -65,10 +65,12 @@
                     <div class="invalid-feedback">{{ gamma_error }}</div>
                   </div>
                 </li>
+                {% block form-buttons-override %}
                 <li class="list-group-item">
                   <button type="submit" class="btn btn-danger" id="update-plots-submit" name="update-plots-submit">Update Plots</button>
                   <a class="btn btn-secondary" id="reset-btn" href="">Reset</a>
                 </li>
+                {% endblock %}
               </ul>
             </form>
           </div>
@@ -154,7 +156,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block app_actions %}
 {% endblock %}
